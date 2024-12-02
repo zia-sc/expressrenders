@@ -39,7 +39,15 @@ app.use(cors());
 app.use(morgan('short'));
 app.use(express.json());
 
-app.set('json spaces', 3); // pretty print JSON responses 
+// Serve static files for public and images
+const publicPath = path.resolve(__dirname, "public");
+const imagesPath = path.resolve(__dirname, "images");
+
+app.use("/public", express.static(publicPath));
+app.use("/images", express.static(imagesPath));
+
+// Set pretty print JSON responses
+app.set('json spaces', 3);
 
 // Route to get all lessons
 app.get('/collections/lessons', async (req, res, next) => {
@@ -86,7 +94,6 @@ app.put('/collections/lessons/:id', async (req, res, next) => {
     const updatedLesson = await db.collection('lessons').findOne({ _id: new ObjectId(lessonId) });
 
     res.status(200).send(updatedLesson);
-
   } catch (err) {
     console.error('Error occurred while updating lesson:', err);
     res.status(500).send({ message: 'Failed to update lesson', error: err.message });
@@ -124,7 +131,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Server Error');
 });
 
-// 404 error handler
+// 404 error handler for non-existent routes
 app.use((req, res) => {
   res.status(404).send('Resource not found!');
 });
