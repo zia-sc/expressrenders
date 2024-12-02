@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "d62079e6-ec4d-4d53-bca4-c0f17d293785",
+		"name": "lessons",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40100122"
+	},
+	"item": [
+		{
+			"name": "READ Root",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.expect(pm.response.text()).to.include(\"Select a collection, e.g., /collections/lessons\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url\n}}",
+					"host": [
+						"{{base_url\n}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "READ All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed the response schema validation test",
+							"pm.test(\"Response schema is valid\", function () {",
+							"  var schema = {",
+							"    type: \"array\",",
+							"    items: {",
+							"      type: \"object\",",
+							"      properties: {",
+							"        _id: { type: \"string\" },",
+							"        title: { type: \"string\" },",
+							"        description: { type: \"string\" },",
+							"        price: { type: \"number\" },",
+							"        image: { type: \"string\" },",
+							"        availableInventory: { type: \"number\" },",
+							"        rating: { type: \"number\" }",
+							"      },",
+							"      required: [\"_id\", \"title\", \"description\", \"price\", \"image\", \"availableInventory\", \"rating\"]",
+							"    }",
+							"  };",
+							"",
+							"  var response = pm.response.json();",
+							"  pm.expect(tv4.validate(response, schema)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url\n}}/collections/lessons",
+					"host": [
+						"{{base_url\n}}"
+					],
+					"path": [
+						"collections",
+						"lessons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
